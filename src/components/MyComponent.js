@@ -2,7 +2,7 @@
 // 1. Class component
 // 2. function component
 import React from "react";
-import UserInfor from "./UserInfo";
+import AddUserInfor from "./AddUserInfo";
 import DisplayInfor from "./DisplayInfor";
 // Viết component bằng class
 class MyComponent extends React.Component {
@@ -13,10 +13,17 @@ class MyComponent extends React.Component {
       { id: 3, name: "Naha", age: 22 },
     ],
   };
+
+  handleAddNewUser = (userObj) => {
+    console.log(userObj);
+    this.setState({
+      listUser: [...this.state.listUser, userObj],
+    });
+  };
   render() {
     return (
       <>
-        <UserInfor />
+        <AddUserInfor handleAddNewUser={this.handleAddNewUser} />
         <br></br>
         <DisplayInfor listUser={this.state.listUser} />
       </>
