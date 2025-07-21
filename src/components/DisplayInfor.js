@@ -1,30 +1,42 @@
 import React from "react";
 class DisplayInfor extends React.Component {
+  state = {
+    isShowHideUsers: true,
+  };
+  handleShowHide = () => {
+    this.setState({ isShowHideUsers: !this.state.isShowHideUsers });
+  };
   render() {
-    // props => viết tắt properties
-    // this.props - Trả về obj chứa toàn bộ thuộc tính được truyền từ component cha xuống
-    // Viết gọn code với detructuring object
     const { listUser } = this.props;
-    console.log(listUser);
     return (
-      <>
-        {listUser.map((user) => {
-          return (
-            <div key={user.id}>
-              <div>My name's {user.name}</div>
-              <div>My age's {user.age}</div>
-              <hr />
-            </div>
-          );
-        })}
-        {/* <div>My age's {age}</div>
-        <hr />
-        <div>My name's {name}</div>
-        <div>My age's {age}</div>
-        <hr />
-        <div>My name's {name}</div>
-        <div>My age's {age}</div>  */}
-      </>
+      <div>
+        <div>
+          <span
+            onClick={() => {
+              this.handleShowHide();
+            }}
+          >
+            {this.state.isShowHideUsers === true
+              ? "Hide list user:"
+              : "Show list user:"}
+          </span>
+        </div>
+        {/* sử dụng điều kiện và && - Nếu nó true thì thực hiện, false thì kh thực hiện */}
+        {/* Syntax: condition && <phần tử html> */}
+        {this.state.isShowHideUsers && (
+          <div>
+            {listUser.map((user) => {
+              return (
+                <div key={user.id} className={+user.age > 18 ? "green" : "red"}>
+                  <div>My name's {user.name}</div>
+                  <div>My age's {user.age}</div>
+                  <hr />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     );
   }
 }
