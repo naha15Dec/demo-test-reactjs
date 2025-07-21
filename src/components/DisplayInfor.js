@@ -4,15 +4,26 @@ class DisplayInfor extends React.Component {
     // props => viết tắt properties
     // this.props - Trả về obj chứa toàn bộ thuộc tính được truyền từ component cha xuống
     // Viết gọn code với detructuring object
-    const { name, age } = this.props;
+    const { listUser } = this.props;
+    console.log(listUser);
     return (
       <>
-        {console.log(this.props)}
-        {/* Nhận thuộc tính {name: 'Nhật Hào', age: '18'} được truyền từ component cha (MyComponent) xuống */}
-        {/* <div>My name's {this.props.name}</div>
-        <div>My age's {this.props.age}</div> */}
+        {listUser.map((user) => {
+          return (
+            <div key={user.id}>
+              <div>My name's {user.name}</div>
+              <div>My age's {user.age}</div>
+              <hr />
+            </div>
+          );
+        })}
+        {/* <div>My age's {age}</div>
+        <hr />
         <div>My name's {name}</div>
         <div>My age's {age}</div>
+        <hr />
+        <div>My name's {name}</div>
+        <div>My age's {age}</div>  */}
       </>
     );
   }
