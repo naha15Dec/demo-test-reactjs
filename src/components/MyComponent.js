@@ -4,14 +4,21 @@
 import React from "react";
 // Viết component bằng class
 class MyComponent extends React.Component {
-  // Dùng jsx - Cho phép viết code js trong html
+  state = {
+    name: "Nhật Hào",
+    age: 21,
+    address: "binhduong",
+  };
+  handleClick() {
+    console.log("Clicked");
+  }
   render() {
     return (
-      <div>
-        My first component
-        <br></br>
-        SỐ random: {Math.random()}
-      </div>
+      <>
+        <div>My name is {this.state.name}</div> and I'm from{" "}
+        {this.state.address}
+        <button onClick={this.handleClick}>Click me</button>
+      </>
     );
   }
 }
