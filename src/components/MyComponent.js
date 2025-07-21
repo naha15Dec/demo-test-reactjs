@@ -20,17 +20,26 @@ class MyComponent extends React.Component {
       age: Math.floor(Math.random() * 100),
     });
   };
+
+  handleOnChange = (e) => {
+    this.setState({
+      name: e.target.value,
+    });
+  };
+
+  // Ngăn chặn hành vi mặc định của form
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+  };
   render() {
     return (
       <>
         <div>My name is {this.state.name}</div> and I'm {this.state.age}
-        <button
-          onClick={() => {
-            this.handleClick();
-          }}
-        >
-          Click me
-        </button>
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" onChange={this.handleOnChange} />
+          <button>Submit</button>
+        </form>
       </>
     );
   }
