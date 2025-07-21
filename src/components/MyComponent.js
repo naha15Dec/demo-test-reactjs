@@ -9,15 +9,28 @@ class MyComponent extends React.Component {
     age: 21,
     address: "binhduong",
   };
-  handleClick() {
-    console.log("Clicked");
-  }
+  //   handleClick() {
+  //     console.log("My name is", this.state.name);
+  //   } Lỗi
+  // Sử dụng arrow function hết lỗi
+  handleClick = () => {
+    console.log("My name is", this.state.name);
+    this.setState({
+      name: "KunĐẹpChai",
+      age: Math.floor(Math.random() * 100),
+    });
+  };
   render() {
     return (
       <>
-        <div>My name is {this.state.name}</div> and I'm from{" "}
-        {this.state.address}
-        <button onClick={this.handleClick}>Click me</button>
+        <div>My name is {this.state.name}</div> and I'm {this.state.age}
+        <button
+          onClick={() => {
+            this.handleClick();
+          }}
+        >
+          Click me
+        </button>
       </>
     );
   }
