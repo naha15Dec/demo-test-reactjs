@@ -27,7 +27,7 @@ class DisplayInfor extends React.Component {
         {/* sử dụng điều kiện và && - Nếu nó true thì thực hiện, false thì kh thực hiện */}
         {/* Syntax: condition && <phần tử html> */}
         {this.state.isShowHideUsers && (
-          <div>
+          <>
             {listUser.map((user) => {
               return (
                 <div key={user.id} className={+user.age > 18 ? "green" : "red"}>
@@ -37,7 +37,7 @@ class DisplayInfor extends React.Component {
                 </div>
               );
             })}
-          </div>
+          </>
         )}
       </div>
     );

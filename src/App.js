@@ -7,7 +7,11 @@ import MyComponent from "./components/MyComponent";
 
 class App extends React.Component {
   render() {
-    return <MyComponent></MyComponent>;
+    return (
+      <div className="app-container">
+        <MyComponent></MyComponent>
+      </div>
+    );
   }
 }
 
