@@ -1,48 +1,39 @@
 // Có 2 cách viết component
 // 1. Class component
 // 2. function component
-import React from "react";
+import React, { useState } from "react";
 import AddUserInfor from "./AddUserInfo";
 import DisplayInfor from "./DisplayInfor";
-// Viết component bằng class
-class MyComponent extends React.Component {
-  state = {
-    listUser: [
-      { id: 1, name: "Nhật Hào", age: 16 },
-      { id: 2, name: "Kun", age: 20 },
-      { id: 3, name: "Naha", age: 22 },
-    ],
-  };
 
-  handleAddNewUser = (userObj) => {
+const MyComponent = () => {
+  const [listUser, setListUser] = useState([
+    { id: 1, name: "Nhật Hào", age: 16 },
+    { id: 2, name: "Kun", age: 20 },
+    { id: 3, name: "Naha", age: 22 },
+  ]);
+  const handleAddNewUser = (userObj) => {
     console.log(userObj);
-    this.setState({
-      listUser: [userObj, ...this.state.listUser],
-    });
+    // this.setState({
+    //   listUser: [userObj, ...this.state.listUser],
+    // });
+    setListUser([userObj, ...listUser]);
   };
 
-  handleDeleteUser = (userId) => {
-    let listUserClone = [...this.state.listUser];
+  const handleDeleteUser = (userId) => {
+    let listUserClone = [...listUser];
     listUserClone = listUserClone.filter((item) => item.id !== userId);
-    this.setState({
-      listUser: listUserClone,
-    });
+    setListUser(listUserClone);
   };
-  render() {
-    return (
-      <>
-        <div className="a">
-          <AddUserInfor handleAddNewUser={this.handleAddNewUser} />
-          <br></br>
-          <DisplayInfor
-            listUser={this.state.listUser}
-            handleDeleteUser={this.handleDeleteUser}
-          />
-        </div>
-        <div className="b"></div>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="a">
+        <AddUserInfor handleAddNewUser={handleAddNewUser} />
+        <br></br>
+        <DisplayInfor listUser={listUser} handleDeleteUser={handleDeleteUser} />
+      </div>
+      <div className="b"></div>
+    </>
+  );
+};
 
 export default MyComponent;
