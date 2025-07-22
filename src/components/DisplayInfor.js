@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./DisplayInfor.scss";
 // import logo from "../logo.svg";
 // class DisplayInfor extends React.Component {
@@ -33,13 +33,34 @@ import "./DisplayInfor.scss";
 
 const DisplayInfor = (props) => {
   const { listUser } = props;
+  // Cách sử dụng useState();
+  // Gán biến cho useState() - Vd: const [<tên state>,<Hàm dùng để thay đổi giá trị>] = useState(<Giá trị khởi tạo state>)
+  const [isShowHideListUsers, setShowHideListUsers] = useState(true);
 
+  const handleShowHideListUsers = () => {
+    setShowHideListUsers(!isShowHideListUsers);
+  };
+  /*
+  state ={
+    isShowHideListUsers: true
+  }
+
+  setState({
+    isShowHideListUsers: false
+  })
+  */
   return (
     <div className="display-infor-container">
-      <div></div>
+      <div>
+        <span onClick={() => handleShowHideListUsers()}>
+          {isShowHideListUsers === true
+            ? "Hide list user: "
+            : "Show list user:"}
+        </span>
+      </div>
       {/* sử dụng điều kiện và && - Nếu nó true thì thực hiện, false thì kh thực hiện */}
       {/* Syntax: condition && <phần tử html> */}
-      {true && (
+      {isShowHideListUsers && (
         <>
           {listUser.map((user) => {
             return (
