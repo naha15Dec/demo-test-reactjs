@@ -12,7 +12,6 @@ const MyComponent = () => {
     { id: 3, name: "Naha", age: 22 },
   ]);
   const handleAddNewUser = (userObj) => {
-    console.log(userObj);
     // this.setState({
     //   listUser: [userObj, ...this.state.listUser],
     // });

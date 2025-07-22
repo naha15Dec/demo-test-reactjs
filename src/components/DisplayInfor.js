@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./DisplayInfor.scss";
 
 const DisplayInfor = (props) => {
@@ -10,7 +10,18 @@ const DisplayInfor = (props) => {
   const handleShowHideListUsers = () => {
     setShowHideListUsers(!isShowHideListUsers);
   };
-
+  console.log(">>> check render");
+  // useEffect(() => {
+  //   console.log(">>> check useEf");
+  //   setTimeout(() => {
+  //     document.title = "KunDepChai";
+  //   }, 3000);
+  // }, []); // tham số thứ 2 là deps - nếu muốn hàm useEff chỉ được gọi 1 lần tiwf để tham số là [] rỗng
+  useEffect(() => {
+    if (listUser.length === 0) {
+      alert("You deleted all users");
+    }
+  }, [listUser]); // Gán tham số thứ 2 là một biến để theo dõi giá trị thay đổi của nó
   return (
     <div className="display-infor-container">
       <div>
