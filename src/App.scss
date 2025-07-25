@@ -11,6 +11,7 @@ body {
 .app-container {
   .header-container {
     .navbar-nav {
+      z-index: 10;
       .nav-link {
         &.active {
           color: #0d6efd;
@@ -18,4 +19,10 @@ body {
       }
     }
   }
+}
+
+video {
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
 }
