@@ -45,8 +45,9 @@ const SideBar = (props) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
             }}
+            className="sidebar-header"
           >
-            <FaNapster size={"2.5em"} color={"#ccc"} />
+            <FaNapster size={"3em"} color={"#ccc"} />
             <span>Naha Quiz</span>
           </div>
         </SidebarHeader>
