@@ -8,12 +8,20 @@ const ModalDeleteUser = (props) => {
 
   const handleClose = () => setShow(false);
 
-  const handleSubmitDeleteUser = () => {
-    toast.success("Delete success");
-    handleClose();
+  const handleSubmitDeleteUser = async () => {
+    let data = await deleteUser(dataDelete.id);
+    if (data && data.EC === 0) {
+      toast.success(data.EM);
+      handleClose();
+      props.setCurrentPage(1);
+      await props.fetchListUser(1);
+    }
+
+    if (data && data.EC !== 0) {
+      toast.error(data.EM);
+    }
   };
 
-  //   let data = await deleteUser(dataDelete.id);
   return (
     <>
       <Modal show={show} onHide={handleClose} backdrop="static">
