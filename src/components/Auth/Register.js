@@ -1,13 +1,14 @@
 import { useState } from "react";
-import "./Login.scss";
+import "./Register.scss";
 import { useNavigate } from "react-router-dom";
-import { postLogin } from "../../Services/apiServices";
+import { postRegister } from "../../Services/apiServices";
 import { toast } from "react-toastify";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
   const [isShowPassword, setIsShowPassword] = useState(false);
 
@@ -17,13 +18,13 @@ const Login = () => {
     return String(email)
       .toLowerCase()
       .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     //validate
-    const isValid = validateEmail(email);
-    if (!isValid) {
+    const isValidEmail = validateEmail(email);
+    if (!isValidEmail) {
       toast.error("Invalid email");
       return;
     }
@@ -32,34 +33,36 @@ const Login = () => {
       toast.error("Invalid password");
       return;
     }
-    //submit login
-    let data = await postLogin(email, password);
+
+    //submit apis
+    let data = await postRegister(email, password, username);
     if (data && data.EC === 0) {
       toast.success(data.EM);
-      navigate("/");
+      navigate("/login");
     }
-    if (data && data.EC !== 0) {
+
+    if (data && +data.EC !== 0) {
       toast.error(data.EM);
     }
   };
   return (
-    <div className="login-container">
+    <div className="register-container">
       <div className="header">
-        <span>Don't have an account yet???</span>
+        <span>Already have an account? </span>
         <button
           className="btn btn-outline-dark"
           onClick={() => {
-            navigate("/register");
+            navigate("/login");
           }}
         >
-          Sign up
+          Log in
         </button>
       </div>
       <div className="title col-4 mx-auto">NahaQuiz</div>
-      <div className="welcome col-4 mx-auto">Hello, Who's this?</div>
+      <div className="welcome col-4 mx-auto">Start your journey?</div>
       <div className="content-form col-4 mx-auto">
         <div className="form-group ">
-          <label>Email</label>
+          <label>Email (*)</label>
           <input
             type="email"
             className="form-control"
@@ -90,9 +93,18 @@ const Login = () => {
             </span>
           )}
         </div>
-        <span>Forgot your password?</span>
+        <div className="form-group ">
+          <label>Username</label>
+          <input
+            type="text"
+            className="form-control"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          ></input>
+        </div>
+
         <div>
-          <button onClick={() => handleLogin()}>Login</button>
+          <button onClick={() => handleRegister()}>Create my account</button>
         </div>
         <div className="text-center">
           <span
@@ -110,4 +122,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

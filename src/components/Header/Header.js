@@ -11,7 +11,7 @@ const Header = () => {
   };
 
   const handleSignup = () => {
-    navigate("/signup");
+    navigate("/register");
   };
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
