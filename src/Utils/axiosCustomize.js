@@ -1,4 +1,7 @@
 import axios from "axios";
+import nProgress from "nprogress";
+
+nProgress.configure({ trickleSpeed: 100 /*showSpinner: false*/ });
 
 const instance = axios.create({
   baseURL: "http://localhost:8081/",
@@ -8,6 +11,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    nProgress.start();
     return config;
   },
   function (error) {
@@ -21,10 +25,12 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    nProgress.done();
 
     return response && response.data ? response.data : response;
   },
   function (error) {
+    nProgress.done();
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
 
