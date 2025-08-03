@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { postLogin } from "../../Services/apiServices";
 import { toast } from "react-toastify";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { useDispatch } from "react-redux";
+import { doLogin } from "../../redux/action/userAction";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +14,8 @@ const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const validateEmail = (email) => {
     return String(email)
@@ -35,6 +39,7 @@ const Login = () => {
     //submit login
     let data = await postLogin(email, password);
     if (data && data.EC === 0) {
+      dispatch(doLogin(data));
       toast.success(data.EM);
       navigate("/");
     }
