@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const account = useSelector((state) => state.user.account);
-  console.log(account);
 
   const navigate = useNavigate();
   const handleLogin = () => {
@@ -17,6 +16,10 @@ const Header = () => {
 
   const handleSignup = () => {
     navigate("/register");
+  };
+
+  const handleLogout = () => {
+    navigate("/login");
   };
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -52,7 +55,9 @@ const Header = () => {
               <>
                 <div className="nav-link">Username: {account.username}</div>
                 <NavDropdown title="Setting" id="basic-nav-dropdown">
-                  <NavDropdown.Item>Log out</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => handleLogout()}>
+                    Log out
+                  </NavDropdown.Item>
                   <NavDropdown.Item>Profile</NavDropdown.Item>
                 </NavDropdown>
               </>
