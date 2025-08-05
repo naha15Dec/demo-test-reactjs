@@ -5,6 +5,8 @@ import _ from "lodash";
 import "./DetailQuiz.scss";
 import { useLocation } from "react-router-dom";
 import Question from "./Question";
+import { postSubmitQuiz } from "../../Services/apiServices";
+import ModalResult from "./ModalResult";
 
 const DetailQuiz = () => {
   const location = useLocation();
@@ -14,6 +16,9 @@ const DetailQuiz = () => {
 
   const [dataQuiz, setDataQuiz] = useState([]);
   const [index, setIndex] = useState(0);
+
+  const [isShowModalResult, setIsShowModalResult] = useState(false);
+  const [dataModalResult, setDataModalResult] = useState({});
 
   useEffect(() => {
     fecthQuestion();
@@ -63,7 +68,7 @@ const DetailQuiz = () => {
     }
   };
 
-  const handleFinishQuiz = () => {
+  const handleFinishQuiz = async () => {
     console.log(">>> check data before submit", dataQuiz);
     if (dataQuiz && dataQuiz.length > 0) {
       let payload = {
@@ -88,7 +93,15 @@ const DetailQuiz = () => {
         });
       });
       payload.answers = answers;
-      console.log(">>> check payload", payload);
+      // submit data
+      let res = await postSubmitQuiz(payload);
+      console.log("check ré", res);
+      if (res && res.EC === 0) {
+        setIsShowModalResult(true);
+        setDataModalResult(res.DT);
+      } else {
+        alert("Somrthing was ướng");
+      }
     }
   };
 
@@ -148,6 +161,12 @@ const DetailQuiz = () => {
         </div>
       </div>
       <div className="right-content">Count Down</div>
+      <ModalResult
+        show={isShowModalResult}
+        setShow={setIsShowModalResult}
+        data={dataModalResult}
+      />
+      ;
     </div>
   );
 };
