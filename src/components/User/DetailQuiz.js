@@ -46,7 +46,6 @@ const DetailQuiz = () => {
           };
         })
         .value();
-      console.log(data);
       setDataQuiz(data);
     }
   };
@@ -64,12 +63,40 @@ const DetailQuiz = () => {
     }
   };
 
+  const handleFinishQuiz = () => {
+    console.log(">>> check data before submit", dataQuiz);
+    if (dataQuiz && dataQuiz.length > 0) {
+      let payload = {
+        quizId: +quizId,
+        answers: [],
+      };
+      let answers = [];
+      dataQuiz.forEach((question) => {
+        let questionId = question.questionId;
+        let userAnswerId = [];
+
+        // todo userAnswerId
+        question.answers.forEach((a) => {
+          if (a.isSelected) {
+            userAnswerId.push(a.id);
+          }
+        });
+
+        answers.push({
+          questionId: +questionId,
+          userAnswerId: userAnswerId,
+        });
+      });
+      payload.answers = answers;
+      console.log(">>> check payload", payload);
+    }
+  };
+
   const HandleCheckboxPa = (answersId, questionId) => {
     let dataQuizClone = _.cloneDeep(dataQuiz);
     let question = dataQuizClone.find(
       (item) => +item.questionId === +questionId
     );
-    console.log(question);
 
     if (question && question.answers) {
       question.answers = question.answers.map((item) => {
@@ -92,7 +119,7 @@ const DetailQuiz = () => {
     <div className="detail-quiz-container">
       <div className="left-content">
         <div className="title">
-          Quiz {quizId}: {/*{location?.state?.quizTitle}*/}
+          Quiz {quizId}: {location?.state?.quizTitle}*
         </div>
         <hr />
 
@@ -112,7 +139,10 @@ const DetailQuiz = () => {
             Next
           </button>
 
-          <button className="btn btn-warning" onClick={() => handleNext()}>
+          <button
+            className="btn btn-warning"
+            onClick={() => handleFinishQuiz()}
+          >
             Finish
           </button>
         </div>
