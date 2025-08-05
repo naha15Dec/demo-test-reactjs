@@ -4,9 +4,13 @@ const Question = (props) => {
   if (_.isEmpty(data)) {
     return <></>;
   }
+
+  const HandleCheckbox = (e, aId, qId) => {
+    props.HandleCheckboxPa(aId, qId);
+  };
   return (
     <>
-      {data.image && (
+      {data.image ? (
         <div className="q-img">
           <img
             src={
@@ -15,6 +19,8 @@ const Question = (props) => {
             alt="..."
           ></img>
         </div>
+      ) : (
+        <div className="q-img"></div>
       )}
       <div className="question">
         Question {index + 1}: {data.questionDecription} ?
@@ -25,9 +31,20 @@ const Question = (props) => {
           data.answers.map((item, index) => {
             return (
               <>
-                <div key={`answers-${index}`} class="form-check a-child">
-                  <input class="form-check-input" type="checkbox" value="" />
-                  <label class="form-check-label">{item.description}</label>
+                <div key={`a-${index}`} className="a-child">
+                  <div className="form-check ">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={item.isSelected}
+                      onChange={(e) =>
+                        HandleCheckbox(e, item.id, data.questionId)
+                      }
+                    />
+                    <label className="form-check-label">
+                      {item.description}
+                    </label>
+                  </div>
                 </div>
               </>
             );
@@ -38,3 +55,12 @@ const Question = (props) => {
 };
 
 export default Question;
+
+/*
+
+<div className="form-check">
+  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label className="form-check-label" for="flexCheckDefault">
+    Default checkbox
+  </label>
+</div>*/
