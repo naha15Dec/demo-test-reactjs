@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./ManageQuiz.scss";
 import Select from "react-select";
+import { postCreateNewQuiz } from "../../../../Services/apiServices";
+import { toast } from "react-toastify";
 
 const options = [
   { value: "EASY", label: "Easy" },
@@ -11,10 +13,32 @@ const options = [
 const ManageQuiz = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("EASY");
+  const [type, setType] = useState(null);
   const [image, setImage] = useState(null);
 
-  const handleChangeFile = () => {};
+  const handleChangeFile = (e) => {
+    if (e.target && e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleSubmitQuiz = async () => {
+    //validate
+    if (!name || !description) {
+      toast.error("Name/Description is required");
+      return;
+    }
+    let res = await postCreateNewQuiz(name, description, type?.value, image);
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      setName("");
+      setDescription("");
+      setType(null);
+      setImage(null);
+    } else {
+      toast.error(res.EM);
+    }
+  };
   return (
     <div className="quiz-container">
       <div className="title">Manage Quizzes</div>
@@ -43,8 +67,8 @@ const ManageQuiz = () => {
           </div>
           <div className="my-3">
             <Select
-              value={type}
-              // onChange={this.handleChange}
+              defaultValue={type}
+              onChange={setType}
               placeholder={"Quiz type..."}
               options={options}
             />
@@ -57,9 +81,17 @@ const ManageQuiz = () => {
               onChange={(e) => handleChangeFile(e)}
             ></input>
           </div>
+          <div className="d-flex justify-content-center">
+            <button
+              className="btn btn-success mt-3"
+              onClick={() => handleSubmitQuiz()}
+            >
+              Save
+            </button>
+          </div>
         </fieldset>
       </div>
-      <div className="detail"></div>
+      <div className="list-detail">Table</div>
     </div>
   );
 };
