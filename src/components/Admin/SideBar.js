@@ -20,9 +20,11 @@ import {
 import sidebarBg from "../../assets/bg2.jpg";
 import { FaNapster } from "react-icons/fa";
 import { MdDashboard, MdTitle } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SideBar = (props) => {
+  const navigate = useNavigate();
+
   const { image, collapsed, toggled, handleToggleSidebar } = props;
   return (
     <>
@@ -48,7 +50,7 @@ const SideBar = (props) => {
             className="sidebar-header"
           >
             <FaNapster size={"3em"} color={"#ccc"} />
-            <span>Naha Quiz</span>
+            <span onClick={() => navigate("/")}>Naha Quiz</span>
           </div>
         </SidebarHeader>
 
@@ -62,10 +64,11 @@ const SideBar = (props) => {
           <Menu iconShape="circle">
             <SubMenu icon={<FaList />} title={"Features"}>
               <MenuItem>
-                {" "}
                 Quản Lý Users <Link to="manage-users" />
               </MenuItem>
-              <MenuItem> Quản Lý Bài Quiz</MenuItem>
+              <MenuItem>
+                Quản Lý Bài Quiz <Link to="manage-quizzes" />
+              </MenuItem>
               <MenuItem> Quản Lý Câu Hỏi</MenuItem>
             </SubMenu>
           </Menu>
@@ -79,7 +82,7 @@ const SideBar = (props) => {
             }}
           >
             <a
-              href="https://www.facebook.com/nhathaokun/"
+              href="/"
               target="_blank"
               className="sidebar-btn"
               rel="noopener noreferrer"
