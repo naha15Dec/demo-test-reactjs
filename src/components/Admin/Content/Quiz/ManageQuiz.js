@@ -5,6 +5,7 @@ import { postCreateNewQuiz } from "../../../../Services/apiServices";
 import { toast } from "react-toastify";
 import TableQuiz from "./TabbleQuiz";
 import Accordion from "react-bootstrap/Accordion";
+import { getAllQuizForAdmin } from "../../../../Services/apiServices";
 
 const options = [
   { value: "EASY", label: "Easy" },
@@ -13,6 +14,13 @@ const options = [
 ];
 
 const ManageQuiz = () => {
+  const fetchQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.EC === 0) {
+      setListQuiz(res.DT);
+    }
+  };
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState(null);
@@ -39,6 +47,7 @@ const ManageQuiz = () => {
       setDescription("");
       setType(null);
       setImage(null);
+      fetchQuiz();
     } else {
       toast.error(res.EM);
     }

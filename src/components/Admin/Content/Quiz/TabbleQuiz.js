@@ -1,19 +1,37 @@
 import { useEffect, useState } from "react";
-import { getAllQuizForAdmin } from "../../../../Services/apiServices";
+import {
+  getAllQuizForAdmin,
+  deleteQuiz,
+} from "../../../../Services/apiServices";
+import ModalUpdateQuiz from "./ModalUpdateQuiz";
+import ModalDeleteQuiz from "../ModalDeleteUser";
 
 const TableQuiz = (props) => {
   const { listQuiz, setListQuiz } = props;
 
+  const [showModalUpdateQuiz, setShowModalUpdateQuiz] = useState(false);
+  const [showModalDeleteQuiz, setShowModalDeleteQuiz] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState({});
+  const [dataDelete, setDataDelete] = useState({});
   useEffect(() => {
     fetchQuiz();
   }, []);
 
   const fetchQuiz = async () => {
     let res = await getAllQuizForAdmin();
-    console.log("check res", res);
     if (res && res.EC === 0) {
       setListQuiz(res.DT);
     }
+  };
+
+  const handleClickBtnEdit = (item) => {
+    setShowModalUpdateQuiz(true);
+    setDataUpdate(item);
+  };
+
+  const handleClickBtnDelete = (item) => {
+    setShowModalDeleteQuiz(true);
+    setDataDelete(item);
   };
   return (
     <>
@@ -39,14 +57,37 @@ const TableQuiz = (props) => {
                   <td>{item.description}</td>
                   <td>{item.difficulty}</td>
                   <td className="d-flex gap-3 ">
-                    <button className="btn btn-warning ">Edit</button>
-                    <button className="btn btn-danger ">Delete</button>
+                    <button
+                      className="btn btn-warning "
+                      onClick={() => handleClickBtnEdit(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-danger "
+                      onClick={() => handleClickBtnDelete(item)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
             })}
         </tbody>
       </table>
+      <ModalUpdateQuiz
+        show={showModalUpdateQuiz}
+        setShow={setShowModalUpdateQuiz}
+        dataUpdate={dataUpdate}
+        setDataUpdate={setDataUpdate}
+        fetchQuiz={fetchQuiz}
+      />
+      <ModalDeleteQuiz
+        show={showModalDeleteQuiz}
+        setShow={setShowModalDeleteQuiz}
+        fetchQuiz={fetchQuiz}
+        dataDelete={dataDelete}
+      />
     </>
   );
 };
