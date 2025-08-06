@@ -48,6 +48,11 @@
     }
 
     .admin-main {
+      height: calc(100vh - 40px);
+      // .user-pagiation {
+      //   // display: flex;
+      //   // justify-content: center;
+      // }
     }
   }
 }
