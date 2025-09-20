@@ -12,9 +12,8 @@ import Lightbox from "react-awesome-lightbox";
 import { toast } from "react-toastify";
 import {
   getAllQuizForAdmin,
-  postCreateNewQuestionForQuiz,
-  postCreateNewAnswerForQuestion,
   getQuizWithQA,
+  postUpsertQA,
 } from "../../../../Services/apiServices";
 
 const QuizQA = (props) => {
@@ -27,7 +26,7 @@ const QuizQA = (props) => {
   const initQuestions = [
     {
       id: uuidv4(),
-      desciption: "",
+      description: "",
       imageFile: "",
       imageName: "",
       answers: [
@@ -109,7 +108,7 @@ const QuizQA = (props) => {
     if (type === "ADD") {
       const newQuestion = {
         id: uuidv4(),
-        desciption: "",
+        description: "",
         imageFile: "",
         imageName: "",
         answers: [
@@ -156,7 +155,7 @@ const QuizQA = (props) => {
       let questionsClone = _.cloneDeep(questions);
       let index = questionsClone.findIndex((item) => item.id === questionId);
       if (index > -1) {
-        questionsClone[index].desciption = value;
+        questionsClone[index].description = value;
         setQuestions(questionsClone);
       }
     }
@@ -216,7 +215,7 @@ const QuizQA = (props) => {
     let isValidQuestion = true;
     let indexQz = 0;
     for (let i = 0; i < questions.length; i++) {
-      if (!questions[i].desciption) {
+      if (!questions[i].description) {
         indexQz = i;
         isValidQuestion = false;
         break;
@@ -248,25 +247,34 @@ const QuizQA = (props) => {
     }
 
     //submit question
-    for (const question of questions) {
-      let q = await postCreateNewQuestionForQuiz(
-        +selectedQuiz.value,
-        question.desciption,
-        question.imageFile
-      );
-
-      // submit answer
-      for (const answer of question.answers) {
-        await postCreateNewAnswerForQuestion(
-          q.DT.id,
-          answer.description,
-          answer.isCorrect
+    let questionsClone = _.cloneDeep(questions);
+    for (let i = 0; i < questionsClone.length; i++) {
+      if (questionsClone[i].imageFile) {
+        questionsClone[i].imageFile = await toBase64(
+          questionsClone[i].imageFile
         );
       }
     }
-    toast.success("Create Questions and Answers succeed");
-    setQuestions(initQuestions);
+
+    let rs = await postUpsertQA({
+      quizId: selectedQuiz.value,
+      questions: questionsClone,
+    });
+    if (rs && rs.EC === 0) {
+      toast.success(rs.EM);
+      fetchQuizWithQA();
+    } else {
+      toast.error(rs.EM);
+    }
   };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
 
   return (
     <div className="questions-container">
